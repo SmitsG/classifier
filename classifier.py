@@ -4,46 +4,36 @@ Spyder Editor
 
 This is a temporary script file.
 """
-
-import openpyxl
+import re
 
 def main():
+    csv_file = File()
+    filename = "C:/Users/Beheerder/Documents/GitHub/classifier/input.csv"
+    obj_valuelist = csv_file.get_values(filename)
     
-    # Workbook1
-    wb1 = Workbook()
-    loaded_wb = wb1.load_workbook()
-    sheet_names = wb1.get_sheet_names(loaded_wb)
-    for sheet_name in sheet_names:
-        sheet_name = Sheet(sheet_name)
-        sheet_name.get_polarity()
         
-class Workbook:
-    def load_workbook(self):
-        loaded_wb = openpyxl.load_workbook(filename = "C:/Users/Beheerder/Documents/GitHub/classifier/input.xlsx")
-        return(loaded_wb)
-        
-    def get_sheet_names(self, wb):
-        sheet_names = wb.get_sheet_names()
-        return(sheet_names)
-        
-class Sheet:
-    def __init__(self, sheet_name):
-        self.sheet_name = sheet_name
-        
-    def get_polarity(self):
-        pass
-       
-    def __str__(self):
-        return(self.sheet_name)
-        
+class File:
+    
+    def get_values(self, filename):
+        start = False
+        with open(filename, "r") as csv_file:
+            obj_valuelist = []
+            for line in csv_file:
+                if re.match(r'^\d', line):
+                    start = True
+                if start == True:
+                     line = line.replace("\n", "")
+                     line = line.split(",")
+                     obj = Aminoacid(line[0], line[1], line[2])
+                     obj_valuelist.append(obj)
+        return(obj_valuelist)
+                     
         
 class Aminoacid:
-    def __init__(self, polarity, hydrofobicity, given, predicted, error):
+    def __init__(self, polarity, hydrofobicity, given):
         self.pol = polarity
         self.hyd = hydrofobicity
         self.giv = given
-        self.pred = predicted
-        self.err = error
         
     def get_polarity(self):
         return(self.pol)
@@ -59,6 +49,7 @@ class Aminoacid:
     
     def error(self):
         return(self.error)
+        
 
     
 main()
