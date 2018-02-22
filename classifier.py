@@ -8,13 +8,13 @@ import re
 import csv
 
 def main():
-    csv_file = File()
+    csv_file = CsvFile()
     path = "C:/Users/gerwi/PycharmProjects/classifier/input.csv"
     data_list = csv_file.get_csv_values(path)
 
 
 # Class File does something with the file.
-class File:
+class CsvFile:
 
     def get_csv_values(self, path):
         """
