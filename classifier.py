@@ -9,24 +9,29 @@ import csv
 
 def main():
     csv_file = CsvFile()
-    path = "C:/Users/gerwi/PycharmProjects/classifier/input.csv"
+    path = "C:/Users/Beheerder/Documents/GitHub/classifier/input.csv"
+    reader = csv_file.open_csv_file(path)
+    header = csv_file.skip_header(reader)
     data_list = csv_file.get_csv_values(path)
-
 
 # Class File does something with the file.
 class CsvFile:
+
+    def open_csv_file(self, path):
+        file = open(path, newline='')
+        reader = csv.reader(file)
+        return(reader)
+
+    def skip_header(self, reader):
+        header = next(reader)
 
     def get_csv_values(self, path):
         """
         :param path: filepath + filename
         :return: data_list: List with data objects [obj1: polarity, hydrofobicity, given class, obj2 ...]
         """
-        file = open(path, newline='')
-        reader = csv.reader(file)
         data_list = []
 
-        header = next(reader)
-        data = []
         for row in reader:
             # row = [polarity, hydrofobicity, given_class]
             polarity = int(row[0])
