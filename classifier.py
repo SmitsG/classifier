@@ -4,15 +4,19 @@ Spyder Editor
 
 This is a temporary script file.
 """
-import re
 import csv
+from random import randint
+
 
 def main():
     csv_file = CsvFile()
-    path = "C:/Users/Beheerder/Documents/GitHub/classifier/input.csv"
+    path = "C:/Users/gerwi/PycharmProjects/GitHub/classifier/input.csv"
     reader = csv_file.open_csv_file(path)
     header = csv_file.skip_header(reader)
-    data_list = csv_file.get_csv_values(path)
+    data_list = csv_file.get_csv_values(path, reader)
+    # a, b = randomiser(0, 9)
+    # print(AminoAcid.get_hydrofobicity(data_list[1]))
+
 
 # Class File does something with the file.
 class CsvFile:
@@ -25,7 +29,7 @@ class CsvFile:
     def skip_header(self, reader):
         header = next(reader)
 
-    def get_csv_values(self, path):
+    def get_csv_values(self, path, reader):
         """
         :param path: filepath + filename
         :return: data_list: List with data objects [obj1: polarity, hydrofobicity, given class, obj2 ...]
@@ -59,12 +63,20 @@ class AminoAcid:
     def get_class_given(self):
         return self.giv
     
-    def get_class_predicted(self):
+    def get_class_predicted(self, polarity, hydrofobicity):
+        polarity = a * hydrofobicity + b
+
         return self.pred
     
-    def get_error(self):
+    def calculate_error(self):
         return self.error
-        
+
+
+# def randomiser(lowest_value, highest_value):
+#     a = randint(lowest_value, highest_value)
+#     b = randint(lowest_value, highest_value)
+#     return a, b
+
 
 main()
 
