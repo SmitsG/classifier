@@ -10,13 +10,28 @@ from random import randint
 
 def main():
     csv_file = CsvFile()
-    path = "C:/Users/gerwi/PycharmProjects/GitHub/classifier/input.csv"
+    path = "C:/Users/Beheerder/Documents/GitHub/classifier/input.csv"
     reader = csv_file.open_csv_file(path)
     header = csv_file.skip_header(reader)
     data_list = csv_file.get_csv_values(reader)
-    a, b = randomiser(0, 9)
-    # print(AminoAcid.get_hydrofobicity(data_list[2]))
-    class_predicted_list = AminoAcid.get_class_predicted(data_list, a, b)
+    calculate = Caluculations()
+
+    # todo: simplefy this
+
+    for i in range(100):
+        class_predicted_list = []
+        count = 0
+        a, b = randomiser(0, 9)
+        for data_object in data_list:
+            class_predicted = calculate.calculate_class_predicted(AminoAcid.get_hydrofobicity(data_object),
+                                                                  AminoAcid.get_polarity(data_object), a, b)
+
+            class_predicted_list.append(class_predicted)
+            count += 1
+        print(class_predicted_list)
+
+
+    # class_predicted_list = AminoAcid.get_hydrofobicity(data_list[1])
 
 
 # Class File does something with the file.
@@ -73,16 +88,14 @@ class AminoAcid:
     
     def get_class_given(self):
         return self.giv
+
+
+class Caluculations:
     
-    def get_class_predicted(data_list, a, b):
-        class_predicted_list = []
-        for hyd, pol in data_list.get_hydrofobicity(), data_list.get_polarity():
-            hydrofobicity = AminoAcid.get_hydrofobicity(data_list[hyd])
-            polarity = AminoAcid.get_hydrofobicity(data_list[pol])
-            class_predicted = (a * hydrofobicity + b) - polarity
-            class_predicted_list.append(class_predicted)
-        return class_predicted_list
-    
+    def calculate_class_predicted(self, hydrofobicity, polarity, a, b):
+        class_predicted = (a * hydrofobicity + b) - polarity
+        return class_predicted
+
     def calculate_error(self):
         pass
 
