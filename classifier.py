@@ -4,101 +4,50 @@ Spyder Editor
 
 This is a temporary script file.
 """
-import csv
 from random import randint
-
+from CsvFile import CsvFile
 
 def main():
     csv_file = CsvFile()
     path = "C:/Users/Beheerder/Documents/GitHub/classifier/input.csv"
     reader = csv_file.open_csv_file(path)
     header = csv_file.skip_header(reader)
-    data_list = csv_file.get_csv_values(reader)
-    calculate = Caluculations()
+    data_dictionary = csv_file.get_csv_values(reader, csv_file)
+    class_predicted_dictionary = calculate_predictions(data_dictionary)
+    calculate_error(data_dictionary, class_predicted_dictionary)
 
-    # todo: simplefy this
 
+def calculate_predictions(data_dictionary):
+    """
+    Calculate class predicted for each row in dataset, x times.
+    :param data_dictionary: key - row_name  , value - [hydrofobicity, polarity, class_given]
+    :return class_predicted_dictionary: key - row_name, value - predicted values for each row
+    """
+    class_predicted_dictionary = {}
     for i in range(100):
-        class_predicted_list = []
-        count = 0
-        a, b = randomiser(0, 9)
-        for data_object in data_list:
-            class_predicted = calculate.calculate_class_predicted(AminoAcid.get_hydrofobicity(data_object),
-                                                                  AminoAcid.get_polarity(data_object), a, b)
-
-            class_predicted_list.append(class_predicted)
-            count += 1
-        print(class_predicted_list)
+        times = "times_" + str(i)
+        a, b = randomiser(0, 50) # Get a and b random values for Monte Carlo prediction.
+        for row, data in data_dictionary.items(): # Do this x times the range
+            class_predicted_value = calculate_class_predicted(data[0], data[1], a, b)
+            class_predicted_dictionary.setdefault(times, []).append(class_predicted_value) #adds multiple values without overwriting
+    return class_predicted_dictionary
 
 
-    # class_predicted_list = AminoAcid.get_hydrofobicity(data_list[1])
+def calculate_class_predicted(hydrofobicity, polarity, a, b):
+    class_predicted_value = (a * hydrofobicity + b) - polarity
+    return class_predicted_value
 
 
-# Class File does something with the file.
-class CsvFile:
-    def __init__(self):
-        pass
-
-    def open_csv_file(self, path):
-        """
-        :param path: path + filename
-        :return: csv reader
-        """
-        file = open(path, newline='')
-        reader = csv.reader(file)
-        return reader
-
-    def skip_header(self, reader):
-        """
-        :param reader: csv reader
-        :return: header of the csv file
-        """
-        header = next(reader)
-        return header
-
-    def get_csv_values(self, reader):
-        """
-        :param reader: cvs reader
-        :return: data_list: List with data objects [obj1: polarity, hydrofobicity, given class, obj2 ...]
-        """
-        data_list = []
-
-        for row in reader:
-            # row = [polarity, hydrofobicity, given_class]
-            polarity = int(row[0])
-            hydrofobicity = int(row[1])
-            given_class = int(row[2])
-            data = AminoAcid(polarity, hydrofobicity, given_class)
-            data_list.append(data)
-        return data_list
-
-
-# Class AminoAcid stores amino_acid values.
-class AminoAcid:
-    def __init__(self, polarity, hydrofobicity, given):
-        self.pol = polarity
-        self.hyd = hydrofobicity
-        self.giv = given
-        
-    def get_polarity(self):
-        return self.pol
-    
-    def get_hydrofobicity(self):
-        return self.hyd
-    
-    def get_class_given(self):
-        return self.giv
-
-
-class Caluculations:
-    
-    def calculate_class_predicted(self, hydrofobicity, polarity, a, b):
-        class_predicted = (a * hydrofobicity + b) - polarity
-        return class_predicted
-
-    def calculate_error(self):
-        pass
-
+def calculate_error(data_dictionary, predicted_class_dictionary):
+    pass
+    # datarow = 0
+    # for times, predicted_class_list in predicted_class_dictionary.items():
+    #     for predicted_class in predicted_class_list:
+    #         datarow += 1
+    #         print(predicted_class, data_dictionary[])
+    #         error = data_dictionary["row_" + str(datarow)] - predicted_class
+    #         print(error)
+    #     datarow = 0
 
 def randomiser(lowest_value, highest_value):
     a = randint(lowest_value, highest_value)
@@ -108,16 +57,30 @@ def randomiser(lowest_value, highest_value):
 
 main()
 
-# with open(path, "r") as csv_file:
-#     reader = csv.reader(csv_file)
-#     header = next(reader)
-#     for row in reader:
-#         print(row)
-#         if re.match(r'^\d', row):
-#             start = True
-#         if start == True:
-#              row = row.strip()
-#              row = row.split(",")
-#              obj = Amino_acid(row[0], row[1], row[2])
-#              obj_valuelist.append(obj)
-# return obj_valuelist
+
+
+
+
+
+
+
+
+
+
+
+
+#main
+# predictions_dictionary = Caluculations.calculate_predictions(data_list)
+
+#calculate
+ # for data_object in data_list:
+            # class_predicted = calculate.calculate_class_predicted(AminoAcid.get_hydrofobicity(data_object),
+            #                                                       AminoAcid.get_polarity(data_object), a, b)
+#
+            # data_list = []
+            # data = AminoAcid(polarity, hydrofobicity, given_class)
+            # data_list.append(data)
+
+  # get class predicted for each object in the data_list.
+  #   and do this several amount of times (range).
+  #   store the values for each time in a dictionary.
