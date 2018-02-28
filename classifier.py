@@ -26,13 +26,14 @@ def calculate_predictions(data_dictionary):
     :param data_dictionary: key - row_name  , value - [hydrofobicity, polarity, class_given]
     :return class_predicted_dictionary: key - times (Monte Carlo), value - predicted values for each row in the csv file.
     """
+
     class_predicted_dictionary = {}
     for i in range(50):
         times = "times_" + str(i)
         a, b = randomiser(0, 10) # Get a and b random values for Monte Carlo prediction.
         for row, data in data_dictionary.items(): # Do this x times the range
             class_predicted_value = calculate_class_predicted(data[0], data[1], a, b)
-            class_predicted_dictionary.setdefault(times, []).append(class_predicted_value) # adds multiple values without overwriting
+            class_predicted_dictionary.setdefault(row, []).append(class_predicted_value) # adds multiple values without overwriting
     return class_predicted_dictionary
 
 
@@ -66,14 +67,11 @@ def calculate_error(data_dictionary, class_predicted_dictionary):
     :return error_dictionary: key - times (Monte Carlo), value calculated error rate for each row of the csv file.
     """
     error_dictionary = {}
-    count = 0
-    for times, predicted_class_list in class_predicted_dictionary.items():
-        for predicted_class in predicted_class_list: # voor 70
-            count += 1
-            list_with_given_class = data_dictionary.get("row_" + str(count))
-            error = ((list_with_given_class[2] - predicted_class) ** 2)
-            error_dictionary.setdefault(times, []).append(error)
-        count = 0
+    for row, predicted_class_list in class_predicted_dictionary.items():
+        for predicted_class in predicted_class_list:
+            error = ((data_dictionary.get(row)[2] - predicted_class) ** 2)
+            error_dictionary.setdefault(row, []).append(error)
+    print(error_dictionary)
     return error_dictionary
 
 
@@ -83,8 +81,8 @@ def calculate_lowest_error(error_dictionary):
     :return lowest_error_dictionary: key - times (Monte Carlo), value - lowest error calculated from all rows in the csv file.
     """
     lowest_error_dictionary = {}
-    for times, error_list in error_dictionary.items():
-        lowest_error_dictionary[times] = min(error_list)
+    for row, error_list in error_dictionary.items():
+        lowest_error_dictionary[row] = min(error_list)
     return lowest_error_dictionary
 
 

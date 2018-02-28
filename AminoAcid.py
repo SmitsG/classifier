@@ -1,6 +1,11 @@
 # Class AminoAcid stores amino_acid values.
 class AminoAcid:
     def __init__(self, polarity, hydrofobicity, given):
+        """
+        :param polarity: Polarity of a row from a csv file.
+        :param hydrofobicity: Hydrofobicity from a row in a csv file.
+        :param given: Given class from a row in a csv file.
+        """
         self.pol = polarity
         self.hyd = hydrofobicity
         self.giv = given

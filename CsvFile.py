@@ -39,6 +39,11 @@ class CsvFile:
         return data_dictionary
 
     def name_rows(self, row_nr):
+        """
+        :param row_nr: row number of the previous row in the csv file.
+        :return row_nr: row number of the current row.
+        :return row_name: row name of the current row.
+        """
         row_nr += 1
         row_name = "row_" + str(row_nr)
         return row_nr, row_name
