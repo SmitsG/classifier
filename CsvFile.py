@@ -2,7 +2,7 @@
 
 import csv
 from collections import OrderedDict
-
+from AminoAcid import AminoAcid
 
 class CsvFile:
     def __init__(self):
@@ -31,12 +31,21 @@ class CsvFile:
         :return: data_dictionary: key - row_name  , value - [hydrofobicity, polarity, class_given]
         """
         data_dictionary = OrderedDict()
+        data_list = []
         row_nr = 0
+        x_list, y_list, given_list = [], [], []
         for row in reader: # row = [polarity, hydrofobicity, given_class]
             row_nr, row_name = csv_file.name_rows(row_nr)
             polarity, hydrofobicity, given_class = int(row[0]), int(row[1]), int(row[2])
             data_dictionary[row_name] = [polarity, hydrofobicity, given_class]
-        return data_dictionary
+            data = AminoAcid(polarity, hydrofobicity, given_class)
+            data_list.append(data)
+            x_list.append(polarity)
+            y_list.append(hydrofobicity)
+            given_list.append(given_list)
+
+        return data_dictionary, data_list, x_list, y_list, given_list
+
 
     def name_rows(self, row_nr):
         """
