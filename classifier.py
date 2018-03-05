@@ -8,19 +8,23 @@ from random import randint
 from CsvFile import CsvFile
 # import matplotlib.pyplot as plt
 
+
 def main():
     csv_file = CsvFile()
     path = "C:/Users/Beheerder/Documents/GitHub/classifier/input.csv"
     reader = csv_file.open_csv_file(path)
     header = csv_file.skip_header(reader)
     data_dictionary = csv_file.get_csv_values(reader, csv_file)
-    class_predicted_dictionary = calculate_predictions(data_dictionary)
-    error_dictionary = calculate_error(data_dictionary, class_predicted_dictionary)
-    lowest_error_dictionary = calculate_lowest_error(error_dictionary)
-    make_plot(lowest_error_dictionary)
+    times_list = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
+    for times in times_list:
+        class_predicted_dictionary = calculate_predictions(data_dictionary, times)
+        error_dictionary = calculate_error(data_dictionary, class_predicted_dictionary)
+        lowest_error_dictionary = calculate_lowest_error(error_dictionary)
+        # give lowest errors to plot
+    # make_plot(lowest_error_dictionary)
 
 
-def calculate_predictions(data_dictionary):
+def calculate_predictions(data_dictionary, times):
     """
     Calculate class predicted for each row in dataset, x times.
     :param data_dictionary: key - row_name  , value - [hydrofobicity, polarity, class_given]
@@ -28,8 +32,7 @@ def calculate_predictions(data_dictionary):
     """
 
     class_predicted_dictionary = {}
-    for i in range(50):
-        times = "times_" + str(i)
+    for i in range(times):
         a, b = randomiser(0, 10) # Get a and b random values for Monte Carlo prediction.
         for row, data in data_dictionary.items(): # Do this x times the range
             class_predicted_value = calculate_class_predicted(data[0], data[1], a, b)
@@ -71,7 +74,6 @@ def calculate_error(data_dictionary, class_predicted_dictionary):
         for predicted_class in predicted_class_list:
             error = ((data_dictionary.get(row)[2] - predicted_class) ** 2)
             error_dictionary.setdefault(row, []).append(error)
-    print(error_dictionary)
     return error_dictionary
 
 
@@ -82,7 +84,9 @@ def calculate_lowest_error(error_dictionary):
     """
     lowest_error_dictionary = {}
     for row, error_list in error_dictionary.items():
-        lowest_error_dictionary[row] = min(error_list)
+        len(error_list)
+        for error in error_list:
+            pass
     return lowest_error_dictionary
 
 
