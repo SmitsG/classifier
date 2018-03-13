@@ -28,7 +28,7 @@ class CsvFile:
     def get_csv_values(self, reader, csv_file):
         """
         :param reader: cvs reader
-        :return: data_dictionary: key - row_name  , value - [hydrofobicity, polarity, class_given]
+        :return: data_dictionary: key = row_name  , value = [hydrofobicity, polarity, class_given]
         """
         data_dictionary = OrderedDict()
         data_list = []
@@ -42,9 +42,7 @@ class CsvFile:
             data_list.append(data)
             x_list.append(polarity)
             y_list.append(hydrofobicity)
-            given_list.append(given_list)
-
-        return data_dictionary, data_list, x_list, y_list, given_list
+        return data_dictionary, x_list, y_list
 
 
     def name_rows(self, row_nr):
