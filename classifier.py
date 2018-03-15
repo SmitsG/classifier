@@ -21,15 +21,25 @@ def main():
     error_list = []
     minimum_error = 10000000000000
 
-    for i in range(10):
+    for i in range(1000):
         a, b, c = randomiser(-10, 10) # Get a and b random values for Monte Carlo prediction.
         for row, data in data_dictionary.items(): # Do this x times the range
             class_predicted_value = calculate_class_predicted(data[0], data[1], a, b, c)
             error = calculate_error(data[2], class_predicted_value)
             error_list.append(error)
         sum_error = get_sum_error(error_list)
-        minimum_error = check_minimum_error(sum_error, minimum_error, a, b, c)
 
+        if minimum_error > sum_error:
+            minimum_error = sum_error
+            a_opt = a
+            b_opt = b
+            c_opt = c
+        else:
+            minimum_error = minimum_error
+        error_list = []
+
+    print("min_error " + str(minimum_error))
+    print("a_opt " + str(a_opt) + "\n" "b_opt " + str(b_opt) + "\n" "c_opt " + str(c_opt))
 
 def randomiser(lowest_value, highest_value):
     a = randint(lowest_value, highest_value)
@@ -53,14 +63,5 @@ def get_sum_error(error_list):
     sum_error = math.sqrt(sum(error_list))
     return sum_error
 
-
-def check_minimum_error(sum_error, minimum_error, a, b, c):
-    print(sum_error, minimum_error)
-    if minimum_error > sum_error:
-        minimum_error = sum_error
-        a_opt = a
-        b_opt = b
-        c_opt = c
-        return minimum_error, a_opt, b_opt, c_opt
 
 main()
