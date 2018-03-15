@@ -33,16 +33,13 @@ class CsvFile:
         data_dictionary = OrderedDict()
         data_list = []
         row_nr = 0
-        x_list, y_list, given_list = [], [], []
         for row in reader: # row = [polarity, hydrofobicity, given_class]
             row_nr, row_name = csv_file.name_rows(row_nr)
             polarity, hydrofobicity, given_class = int(row[0]), int(row[1]), int(row[2])
             data_dictionary[row_name] = [polarity, hydrofobicity, given_class]
             data = AminoAcid(polarity, hydrofobicity, given_class)
             data_list.append(data)
-            x_list.append(polarity)
-            y_list.append(hydrofobicity)
-        return data_dictionary, x_list, y_list
+        return data_dictionary
 
 
     def name_rows(self, row_nr):

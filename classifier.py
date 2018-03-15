@@ -8,7 +8,6 @@ from random import randint
 from CsvFile import CsvFile
 import math
 from AminoAcid import AminoAcid
-# import matplotlib.pyplot as plt
 
 
 def main():
@@ -16,8 +15,12 @@ def main():
     path = "C:/Users/Beheerder/Documents/GitHub/classifier/input.csv"
     reader = csv_file.open_csv_file(path)
     header = csv_file.skip_header(reader)
-    data_dictionary, x_list, y_list = csv_file.get_csv_values(reader, csv_file)
+    data_dictionary = csv_file.get_csv_values(reader, csv_file)
+    minimum_error, a_opt, b_opt, c_opt = get_minimum_error_and_opt_values(data_dictionary)
+    print(minimum_error, a_opt, b_opt, c_opt)
 
+
+def get_minimum_error_and_opt_values(data_dictionary):
     error_list = []
     minimum_error = 10000000000000
 
@@ -38,8 +41,8 @@ def main():
             minimum_error = minimum_error
         error_list = []
 
-    print("min_error " + str(minimum_error))
-    print("a_opt " + str(a_opt) + "\n" "b_opt " + str(b_opt) + "\n" "c_opt " + str(c_opt))
+    return(minimum_error, a_opt, b_opt, c_opt)
+
 
 def randomiser(lowest_value, highest_value):
     a = randint(lowest_value, highest_value)
