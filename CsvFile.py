@@ -51,3 +51,4 @@ class CsvFile:
         row_nr += 1
         row_name = "row_" + str(row_nr)
         return row_nr, row_name
+
